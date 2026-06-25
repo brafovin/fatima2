@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fortbyte — Battle Royale</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game"></canvas>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden">
+      <div class="hud-top">
+        <div class="alive-counter">
+          <span class="skull">💀</span>
+          <span id="alive-count">100</span> übrig
+        </div>
+        <div id="storm-timer" class="storm-timer">Sturm zieht sich zusammen …</div>
+      </div>
+
+      <canvas id="minimap"></canvas>
+
+      <div class="hud-bottom">
+        <div class="bars">
+          <div class="bar">
+            <div class="bar-fill shield" id="shield-fill"></div>
+            <span class="bar-label" id="shield-text">0</span>
+          </div>
+          <div class="bar">
+            <div class="bar-fill health" id="health-fill"></div>
+            <span class="bar-label" id="health-text">100</span>
+          </div>
+        </div>
+        <div class="inventory">
+          <div class="mats">🪵 <span id="mat-count">0</span></div>
+          <div class="weapon" id="weapon-name">Spitzhacke</div>
+          <div class="ammo">🔫 <span id="ammo-count">∞</span></div>
+        </div>
+      </div>
+
+      <div class="controls-hint">
+        WASD bewegen · Maus zielen · Klick schießen · <b>Q</b> Wand bauen ·
+        <b>1</b> Waffe / <b>2</b> Spitzhacke · <b>Shift</b> sprinten
+      </div>
+    </div>
+
+    <!-- Start / End screens -->
+    <div id="overlay" class="overlay">
+      <div class="overlay-card">
+        <h1 class="title">FORT<span>BYTE</span></h1>
+        <p class="subtitle">Ein Battle-Royale-Mini-Game im Fortnite-Stil</p>
+        <div id="overlay-body">
+          <p class="how">
+            100 Kämpfer, ein schrumpfender Sturm, ein Gewinner.
+            Sammle Material, baue Wände, schalte Gegner aus und überlebe als Letzter.
+          </p>
+          <ul class="legend">
+            <li><b>WASD</b> — Bewegen</li>
+            <li><b>Maus</b> — Zielen, <b>Linksklick</b> — Schießen / Abbauen</li>
+            <li><b>Q</b> — Wand bauen (kostet 🪵 10)</li>
+            <li><b>1 / 2</b> — Waffe / Spitzhacke</li>
+            <li><b>Shift</b> — Sprinten</li>
+          </ul>
+        </div>
+        <button id="start-btn" class="play-btn">Spiel starten</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
