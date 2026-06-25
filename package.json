@@ -1,0 +1,22 @@
+{
+  "name": "ometv",
+  "version": "1.0.0",
+  "description": "Random video chat platform (OmeTV/Omegle clone) using WebRTC and Socket.IO",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "webrtc",
+    "video-chat",
+    "ometv",
+    "omegle",
+    "socket.io"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

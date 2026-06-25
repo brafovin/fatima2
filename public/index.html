@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmeTV — Zufälliger Video-Chat</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="logo">Ome<span>TV</span></h1>
+    <div class="stats">
+      <span class="dot"></span>
+      <span id="online-count">0</span> online
+    </div>
+  </header>
+
+  <main class="stage">
+    <div class="video-wrap">
+      <video id="remote-video" autoplay playsinline></video>
+      <div id="remote-overlay" class="overlay">
+        <div class="spinner"></div>
+        <p id="status-text">Klicke auf „Start", um einen Fremden zu treffen</p>
+      </div>
+      <video id="local-video" class="local" autoplay playsinline muted></video>
+      <div id="typing-indicator" class="typing hidden">Schreibt …</div>
+    </div>
+
+    <aside class="chat">
+      <div id="messages" class="messages"></div>
+      <form id="chat-form" class="chat-form">
+        <input
+          id="chat-input"
+          type="text"
+          placeholder="Nachricht schreiben …"
+          autocomplete="off"
+          maxlength="2000"
+          disabled
+        />
+        <button type="submit" disabled>Senden</button>
+      </form>
+    </aside>
+  </main>
+
+  <footer class="controls">
+    <button id="btn-start" class="btn btn-primary">Start</button>
+    <button id="btn-next" class="btn btn-next hidden">Weiter ⏭</button>
+    <button id="btn-stop" class="btn btn-stop hidden">Stop</button>
+    <button id="btn-cam" class="btn btn-toggle" title="Kamera an/aus">📷</button>
+    <button id="btn-mic" class="btn btn-toggle" title="Mikrofon an/aus">🎤</button>
+  </footer>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
