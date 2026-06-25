@@ -10,6 +10,10 @@ const statusText = document.getElementById('status-text');
 const onlineCount = document.getElementById('online-count');
 const typingIndicator = document.getElementById('typing-indicator');
 
+const queueBadge = document.getElementById('queue-badge');
+const queuePos = document.getElementById('queue-pos');
+const queueTotal = document.getElementById('queue-total');
+
 const messagesEl = document.getElementById('messages');
 const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
@@ -41,6 +45,10 @@ function setStatus(text) {
 
 function showOverlay(show) {
   overlay.classList.toggle('hidden', !show);
+}
+
+function showQueue(show) {
+  queueBadge.classList.toggle('hidden', !show);
 }
 
 function addMessage(text, type) {
@@ -135,6 +143,7 @@ async function find() {
   clearMessages();
   setChatEnabled(false);
   showOverlay(true);
+  showQueue(false);
   setStatus('Suche nach einem Fremden …');
   showCallControls(false);
   socket.emit('find');
@@ -147,6 +156,7 @@ function stop() {
   closePeerConnection();
   setChatEnabled(false);
   showOverlay(true);
+  showQueue(false);
   setStatus('Gestoppt. Klicke auf „Start", um wieder zu starten.');
   btnStart.classList.remove('hidden');
   btnNext.classList.add('hidden');
@@ -159,24 +169,70 @@ function next() {
 }
 
 // --- Button wiring ---
-btnStart.addEventListener('click', () => find());
-btnNext.addEventListener('click', () => next());
-btnStop.addEventListener('click', () => stop());
-
-btnCam.addEventListener('click', () => {
+function toggleCam() {
   if (!localStream) return;
   const track = localStream.getVideoTracks()[0];
   if (!track) return;
   track.enabled = !track.enabled;
   btnCam.classList.toggle('off', !track.enabled);
-});
+}
 
-btnMic.addEventListener('click', () => {
+function toggleMic() {
   if (!localStream) return;
   const track = localStream.getAudioTracks()[0];
   if (!track) return;
   track.enabled = !track.enabled;
   btnMic.classList.toggle('off', !track.enabled);
+}
+
+btnStart.addEventListener('click', () => find());
+btnNext.addEventListener('click', () => next());
+btnStop.addEventListener('click', () => stop());
+btnCam.addEventListener('click', toggleCam);
+btnMic.addEventListener('click', toggleMic);
+
+// --- Keyboard controls ---
+// Enter   → Start / Weiter (kontextabhängig)
+// Esc     → Weiter (nächster Fremder)
+// X       → Stop
+// C / M   → Kamera / Mikro umschalten
+document.addEventListener('keydown', (e) => {
+  // Im Chat-Feld nur Enter zum Senden zulassen, keine globalen Shortcuts.
+  if (document.activeElement === chatInput) {
+    if (e.key === 'Escape') chatInput.blur();
+    return;
+  }
+
+  switch (e.key) {
+    case 'Enter':
+      e.preventDefault();
+      if (isInCall || isSearching) next();
+      else find();
+      break;
+    case 'Escape':
+      if (isInCall || isSearching) {
+        e.preventDefault();
+        next();
+      }
+      break;
+    case 'x':
+    case 'X':
+      if (isInCall || isSearching) {
+        e.preventDefault();
+        stop();
+      }
+      break;
+    case 'c':
+    case 'C':
+      toggleCam();
+      break;
+    case 'm':
+    case 'M':
+      toggleMic();
+      break;
+    default:
+      break;
+  }
 });
 
 // --- Chat ---
@@ -207,12 +263,25 @@ socket.on('waiting', () => {
   setStatus('Warte auf einen freien Partner …');
 });
 
+socket.on('queue', ({ position, total }) => {
+  if (!isSearching) return;
+  queuePos.textContent = position;
+  queueTotal.textContent = total;
+  showQueue(true);
+  setStatus(
+    total <= 1
+      ? 'Du bist allein in der Warteschlange – warte auf jemanden …'
+      : 'Warte auf einen freien Partner …'
+  );
+});
+
 socket.on('matched', async ({ initiator }) => {
   isSearching = false;
   isInCall = true;
   showCallControls(true);
   setChatEnabled(true);
   showOverlay(true);
+  showQueue(false);
   setStatus('Verbinde …');
   addMessage('Du bist jetzt mit einem Fremden verbunden. Sag Hallo!', 'system');
   try {

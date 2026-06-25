@@ -21,6 +21,10 @@
       <div id="remote-overlay" class="overlay">
         <div class="spinner"></div>
         <p id="status-text">Klicke auf „Start", um einen Fremden zu treffen</p>
+        <div id="queue-badge" class="queue-badge hidden">
+          Platz <strong id="queue-pos">–</strong> von
+          <strong id="queue-total">–</strong> in der Warteschlange
+        </div>
       </div>
       <video id="local-video" class="local" autoplay playsinline muted></video>
       <div id="typing-indicator" class="typing hidden">Schreibt …</div>
@@ -43,11 +47,25 @@
   </main>
 
   <footer class="controls">
-    <button id="btn-start" class="btn btn-primary">Start</button>
-    <button id="btn-next" class="btn btn-next hidden">Weiter ⏭</button>
-    <button id="btn-stop" class="btn btn-stop hidden">Stop</button>
-    <button id="btn-cam" class="btn btn-toggle" title="Kamera an/aus">📷</button>
-    <button id="btn-mic" class="btn btn-toggle" title="Mikrofon an/aus">🎤</button>
+    <div class="controls-main">
+      <button id="btn-start" class="btn btn-primary">
+        ▶ Start <kbd>Enter</kbd>
+      </button>
+      <button id="btn-next" class="btn btn-next hidden">
+        Weiter ⏭ <kbd>Esc</kbd>
+      </button>
+      <button id="btn-stop" class="btn btn-stop hidden">
+        ⏹ Stop <kbd>X</kbd>
+      </button>
+    </div>
+    <div class="controls-toggles">
+      <button id="btn-cam" class="btn btn-toggle" title="Kamera an/aus (C)">
+        📷 <span class="lbl">Kamera</span>
+      </button>
+      <button id="btn-mic" class="btn btn-toggle" title="Mikrofon an/aus (M)">
+        🎤 <span class="lbl">Mikro</span>
+      </button>
+    </div>
   </footer>
 
   <script src="/socket.io/socket.io.js"></script>

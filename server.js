@@ -35,6 +35,15 @@ function broadcastStats() {
   });
 }
 
+// Tell every still-waiting socket its 1-based position in the queue and the
+// total number of people waiting, so the UI can show "Du bist 2 von 5".
+function broadcastQueuePositions() {
+  const total = waitingQueue.length;
+  waitingQueue.forEach((s, index) => {
+    s.emit('queue', { position: index + 1, total });
+  });
+}
+
 // Try to pair a socket with the first compatible waiting peer.
 function tryMatch(socket) {
   // Drop any stale/disconnected sockets from the queue.
@@ -63,6 +72,7 @@ function tryMatch(socket) {
   }
 
   broadcastStats();
+  broadcastQueuePositions();
 }
 
 // Tear down the current pairing and notify the partner so they can re-queue.
@@ -110,6 +120,7 @@ io.on('connection', (socket) => {
   socket.on('stop', () => {
     leavePartner(socket, { notify: true });
     broadcastStats();
+    broadcastQueuePositions();
   });
 
   // Relay WebRTC signaling to the current partner only.
@@ -139,6 +150,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     leavePartner(socket, { notify: true });
     broadcastStats();
+    broadcastQueuePositions();
   });
 });
 

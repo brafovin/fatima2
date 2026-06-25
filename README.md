@@ -9,9 +9,21 @@ Audio) und Text chatten. Mit **„Weiter"** springt man zum nächsten Fremden.
 - 🎥 Peer-to-Peer Video & Audio über WebRTC (Server sieht den Stream nie)
 - 🔀 Automatisches Matchmaking zufälliger Paare
 - ⏭ „Weiter"-Button für den nächsten Fremden
+- 🧑‍🤝‍🧑 Warteschlangen-Anzeige (eigene Position + Anzahl Wartende)
+- ⌨️ Tastatursteuerung (Enter / Esc / X / C / M)
 - 💬 Text-Chat mit Tipp-Indikator
 - 📷 / 🎤 Kamera und Mikrofon stummschalten
 - 👥 Live-Anzeige der Online-Nutzer
+
+### Tastenkürzel
+
+| Taste     | Aktion                          |
+| --------- | ------------------------------- |
+| `Enter`   | Start bzw. nächster Fremder     |
+| `Esc`     | Weiter (nächster Fremder)       |
+| `X`       | Stop                            |
+| `C`       | Kamera an/aus                   |
+| `M`       | Mikrofon an/aus                 |
 
 ## Technik
 
